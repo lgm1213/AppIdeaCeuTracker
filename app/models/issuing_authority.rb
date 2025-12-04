@@ -1,0 +1,2 @@
+class IssuingAuthority < ApplicationRecord
+end
