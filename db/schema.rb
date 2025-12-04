@@ -10,9 +10,40 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_03_205812) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_04_201059) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "issuing_authorities", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "license_format_regex"
+    t.string "name"
+    t.string "state"
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "professional_licenses", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.date "expiration_date"
+    t.bigint "issuing_authority_id", null: false
+    t.string "license_number"
+    t.string "status"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["issuing_authority_id"], name: "index_professional_licenses_on_issuing_authority_id"
+    t.index ["user_id"], name: "index_professional_licenses_on_user_id"
+  end
+
+  create_table "user_profiles", force: :cascade do |t|
+    t.string "city"
+    t.datetime "created_at", null: false
+    t.string "first_name"
+    t.string "last_name"
+    t.string "state"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_user_profiles_on_user_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -20,4 +51,8 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_03_205812) do
     t.string "password_digest"
     t.datetime "updated_at", null: false
   end
+
+  add_foreign_key "professional_licenses", "issuing_authorities"
+  add_foreign_key "professional_licenses", "users"
+  add_foreign_key "user_profiles", "users"
 end
