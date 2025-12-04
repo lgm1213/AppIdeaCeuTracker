@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  issuing_authority: one
+  license_number: MyString
+  expiration_date: 2025-12-04
+  status: MyString
+
+two:
+  user: two
+  issuing_authority: two
+  license_number: MyString
+  expiration_date: 2025-12-04
+  status: MyString
