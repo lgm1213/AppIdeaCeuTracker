@@ -1,2 +1,49 @@
-<h1>ProfessionalLicenses#new</h1>
-<p>Find me in app/views/professional_licenses/new.html.erb</p>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow-sm">
+        <div class="card-body p-4">
+          <h3 class="mb-4">Add Professional License</h3>
+
+          <%= form_with model: @license, local: true do |f| %>
+            
+            <!-- Error Messages -->
+            <% if @license.errors.any? %>
+              <div class="alert alert-danger">
+                <ul class="mb-0">
+                  <% @license.errors.full_messages.each do |msg| %>
+                    <li><%= msg %></li>
+                  <% end %>
+                </ul>
+              </div>
+            <% end %>
+
+            <!-- Authority Dropdown -->
+            <div class="mb-3">
+              <%= f.label :issuing_authority_id, "Issuing Authority", class: "form-label" %>
+              <%= f.collection_select :issuing_authority_id, @authorities, :id, :name, { prompt: "Select your Board..." }, { class: "form-select" } %>
+              <div class="form-text text-muted">Don't see yours? Select 'Generic' for now.</div>
+            </div>
+
+            <!-- License Number -->
+            <div class="mb-3">
+              <%= f.label :license_number, class: "form-label" %>
+              <%= f.text_field :license_number, class: "form-control", placeholder: "e.g. RN1234567" %>
+            </div>
+
+            <!-- Expiration Date -->
+            <div class="mb-4">
+              <%= f.label :expiration_date, class: "form-label" %>
+              <%= f.date_field :expiration_date, class: "form-control" %>
+            </div>
+
+            <div class="d-flex gap-2">
+              <%= f.submit "Save License", class: "btn btn-primary" %>
+              <%= link_to "Cancel", dashboard_path, class: "btn btn-outline-secondary" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

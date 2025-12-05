@@ -7,11 +7,12 @@ class ProfessionalLicense < ApplicationRecord
   
   validate :validate_license_format
 
-  def status label
+  def status_label
     return "Expired" if expiration_date < Date.today
-    return "Expiring Soon" if expiration_date <= Date.today + 30.days
+    return "Expiring Soon" if expiration_date < 3.months.from_now
     "Active"
   end
+
 
   private
 
