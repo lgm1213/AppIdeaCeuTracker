@@ -7,12 +7,19 @@ class ProfessionalLicense < ApplicationRecord
   
   validate :validate_license_format
 
+  def status label
+    return "Expired" if expiration_date < Date.today
+    return "Expiring Soon" if expiration_date <= Date.today + 30.days
+    "Active"
+  end
+
   private
 
   def validate_license_format
     # If the Authority has a specific Regex rule, check the number against it
-    if issuing_authority&.license_format_regex.present?
-      # Convert string to Regex object
+    return unless issuing_authority&.license_format_regex.present?
+      
+    # Convert string to Regex object
       regex_rule = Regexp.new(issuing_authority.license_format_regex)
       
       unless license_number.match?(regex_rule)
