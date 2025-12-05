@@ -5,8 +5,8 @@ class DashboardController < ApplicationController
     @user = current_user
     @profile = @user.user_profile
 
-    #@licenses = @user.professional_licenses
-    #@ceus = @user.ceus
+    @licenses = @user.professional_licenses
+    @ceus = @user.ceus
   end
 
 
