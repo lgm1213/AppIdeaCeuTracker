@@ -10,9 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_04_224657) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_05_171603) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "ceus", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.date "date"
+    t.decimal "duration"
+    t.string "title"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_ceus_on_user_id"
+  end
 
   create_table "issuing_authorities", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -53,6 +63,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_04_224657) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "ceus", "users"
   add_foreign_key "professional_licenses", "issuing_authorities"
   add_foreign_key "professional_licenses", "users"
   add_foreign_key "user_profiles", "users"
