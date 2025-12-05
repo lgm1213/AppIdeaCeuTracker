@@ -1,10 +1,12 @@
 Rails.application.routes.draw do
-  get "dashboard/index"
   # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   root "home#index"
+
+  #Dashboard(Protected Area) Routes
+  get "dashboard/index", to: "dashboard#index", as: "dashboard"
 
   get "/login", to: "sessions#new"
   post "/login", to: "sessions#create"

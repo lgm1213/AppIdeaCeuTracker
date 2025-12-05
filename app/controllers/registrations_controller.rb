@@ -11,7 +11,7 @@ class RegistrationsController < ApplicationController
     if @user.save
       # Log the User into app when they register, immediately
       session[:user_id] = @user.id
-      redirect_to root_path, notice: "Welcome #{@user.user_profile.full_name}! Your account has been created."
+      redirect_to dashboard_path, notice: "Welcome #{@user.user_profile.full_name}! Your account has been created."
     else
       #if Save fails, reload the form with the errors displayed
       render :new, status: :unprocessable_entity
