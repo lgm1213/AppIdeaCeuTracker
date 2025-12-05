@@ -1,2 +1,84 @@
-<h1>Registration#new</h1>
-<p>Find me in app/views/registration/new.html.erb</p>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card shadow-sm">
+        <div class="card-body p-4">
+          <h2 class="text-center mb-4">Create Account</h2>
+
+          <%= form_with model: @user, url: signup_path, local: true do |f| %>
+            
+            <% if @user.errors.any? %>
+              <div class="alert alert-danger">
+                <ul class="mb-0">
+                  <% @user.errors.full_messages.each do |msg| %>
+                    <li><%= msg %></li>
+                  <% end %>
+                </ul>
+              </div>
+            <% end %>
+
+            <!-- User Login Fields -->
+            <h5 class="text-muted border-bottom pb-2 mb-3">Login Details</h5>
+            <div class="mb-3">
+              <%= f.label :email, class: "form-label" %>
+              <%= f.email_field :email, class: "form-control", placeholder: "nurse@example.com" %>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <%= f.label :password, class: "form-label" %>
+                <%= f.password_field :password, class: "form-control" %>
+              </div>
+              <div class="col-md-6 mb-3">
+                <%= f.label :password_confirmation, "Confirm Password", class: "form-label" %>
+                <%= f.password_field :password_confirmation, class: "form-control" %>
+              </div>
+            </div>
+
+            <!-- Nested UserProfile Fields -->
+            <!-- These inputs save directly to the Profile table via the User model -->
+            <h5 class="text-muted border-bottom pb-2 mb-3 mt-4">Personal Details</h5>
+            <%= f.fields_for :user_profile do |profile_form| %>
+              
+              <!-- Name Row: First (5 cols), Middle (2 cols), Last (5 cols) -->
+              <div class="row g-2">
+                <div class="col-sm-5 mb-3">
+                  <%= profile_form.label :first_name, "First Name", class: "form-label" %>
+                  <%= profile_form.text_field :first_name, class: "form-control" %>
+                </div>
+                <div class="col-sm-2 mb-3">
+                  <%= profile_form.label :middle_initial, "MI", class: "form-label" %>
+                  <%= profile_form.text_field :middle_initial, class: "form-control text-center", maxlength: 1, placeholder: "A" %>
+                </div>
+                <div class="col-sm-5 mb-3">
+                  <%= profile_form.label :last_name, "Last Name", class: "form-label" %>
+                  <%= profile_form.text_field :last_name, class: "form-control" %>
+                </div>
+              </div>
+
+              <!-- Location Row -->
+              <div class="row">
+                <div class="col-md-8 mb-3">
+                  <%= profile_form.label :city, class: "form-label" %>
+                  <%= profile_form.text_field :city, class: "form-control" %>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <%= profile_form.label :state, "State (Abbr)", class: "form-label" %>
+                  <%= profile_form.text_field :state, class: "form-control", placeholder: "FL", maxlength: 2 %>
+                </div>
+              </div>
+            <% end %>
+
+            <div class="d-grid mt-4">
+              <%= f.submit "Create Account", class: "btn btn-primary btn-lg" %>
+            </div>
+          <% end %>
+
+          <div class="text-center mt-3">
+            Already have an account? <%= link_to "Log In", login_path %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
