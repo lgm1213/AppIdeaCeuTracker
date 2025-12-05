@@ -1,4 +1,4 @@
-class RegistrationController < ApplicationController
+class RegistrationsController < ApplicationController
   def new
     @user = User.new
     #Creates an empty profile object for the nested fields form to work
