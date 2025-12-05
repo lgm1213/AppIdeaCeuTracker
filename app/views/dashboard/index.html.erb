@@ -21,7 +21,7 @@
       </div>
     </div>
 
-    <!-- Main Content: Stats & Data -->
+    <!-- Main Content -->
     <div class="col-md-8 col-lg-9">
       <h2 class="mb-4">My Dashboard</h2>
 
@@ -39,7 +39,8 @@
           <div class="card bg-success text-white h-100">
             <div class="card-body">
               <h6 class="card-title opacity-75">Total CEUs</h6>
-              <h2 class="display-6 fw-bold mb-0"><%= @ceus.count %></h2>
+              <!-- Updated to sum the duration -->
+              <h2 class="display-6 fw-bold mb-0"><%= @ceus.sum(:duration) %></h2>
             </div>
           </div>
         </div>
@@ -53,26 +54,28 @@
         </div>
       </div>
 
-      <!-- Quick Actions / Empty State -->
-      <div class="card shadow-sm">
+      <!-- Section 1: Licenses -->
+      <div class="card shadow-sm mb-4">
         <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
           <h5 class="mb-0">Professional Licenses</h5>
           <%= link_to "+ Add License", new_professional_license_path, class: "btn btn-primary btn-sm" %>
         </div>
-        <div class="card-body text-center py-5 text-muted">
+        <div class="card-body">
           <% if @licenses.empty? %>
-            <p class="mb-3">You haven't added any professional licenses yet.</p>
-            <%= link_to "Add Your First License", new_professional_license_path, class: "btn btn-outline-primary" %>
+            <div class="text-center py-4 text-muted">
+              <p>You haven't added any professional licenses yet.</p>
+              <%= link_to "Add Your First License", new_professional_license_path, class: "btn btn-outline-primary btn-sm" %>
+            </div>
           <% else %>
             <div class="table-responsive">
-              <table class="table table-hover text-start align-middle">
+              <table class="table table-hover text-start align-middle mb-0">
                 <thead>
                   <tr>
                     <th>Authority</th>
                     <th>Number</th>
                     <th>Expires</th>
                     <th>Status</th>
-                    <th></th> <!-- Empty header for actions -->
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -87,9 +90,7 @@
                         </span>
                       </td>
                       <td class="text-end">
-                        <!-- THE REMOVE BUTTON -->
-                        <!-- turbo_confirm adds a "Are you sure?" popup -->
-                        <%= button_to "Remove", professional_license_path(license), method: :delete, class: "btn btn-sm btn-outline-danger", data: { turbo_confirm: "Are you sure you want to delete this license?" } %>
+                        <%= button_to "Remove", professional_license_path(license), method: :delete, class: "btn btn-sm btn-outline-danger", data: { turbo_confirm: "Are you sure?" } %>
                       </td>
                     </tr>
                   <% end %>
@@ -99,6 +100,48 @@
           <% end %>
         </div>
       </div>
+
+      <!-- Section 2: CEU History (THIS IS THE NEW PART) -->
+      <div class="card shadow-sm">
+        <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+          <h5 class="mb-0">CEU History</h5>
+          <%= link_to "+ Log CEU", new_ceu_path, class: "btn btn-success btn-sm text-white" %>
+        </div>
+        <div class="card-body">
+          <% if @ceus.empty? %>
+            <div class="text-center py-4 text-muted">
+              <p>No continuing education recorded yet.</p>
+              <%= link_to "Log Your First Class", new_ceu_path, class: "btn btn-outline-success btn-sm" %>
+            </div>
+          <% else %>
+            <div class="table-responsive">
+              <table class="table table-hover text-start align-middle mb-0">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Activity / Course</th>
+                    <th>Credits</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @ceus.order(date: :desc).each do |ceu| %>
+                    <tr>
+                      <td><%= ceu.date.strftime("%b %d, %Y") %></td>
+                      <td><%= ceu.title %></td>
+                      <td><span class="badge bg-light text-dark border"><%= ceu.duration %></span></td>
+                      <td class="text-end">
+                        <%= button_to "Remove", ceu_path(ceu), method: :delete, class: "btn btn-sm btn-outline-danger", data: { turbo_confirm: "Delete this record?" } %>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
