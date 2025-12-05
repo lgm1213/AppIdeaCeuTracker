@@ -16,8 +16,8 @@ Rails.application.routes.draw do
   get "/signup", to: "registrations#new", as: "signup" 
   post "/signup", to: "registrations#create"
 
-resources :professional_licenses
-
+  resources :professional_licenses
+  resources :ceus
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
