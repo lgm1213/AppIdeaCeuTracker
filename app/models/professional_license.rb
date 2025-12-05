@@ -20,11 +20,10 @@ class ProfessionalLicense < ApplicationRecord
     return unless issuing_authority&.license_format_regex.present?
       
     # Convert string to Regex object
-      regex_rule = Regexp.new(issuing_authority.license_format_regex)
-      
+    regex_rule = Regexp.new(issuing_authority.license_format_regex)   
       unless license_number.match?(regex_rule)
         errors.add(:license_number, "does not match the required format for #{issuing_authority.name}")
       end
-    end
   end
 end
+

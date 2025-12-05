@@ -10,6 +10,8 @@ class User < ApplicationRecord
   
   # A user can have MANY licenses (e.g., FL and NY)
   has_many :professional_licenses, dependent: :destroy
+
+  has_many :ceus, dependent: :destroy
   
   validates :email, presence: true, uniqueness: true
 end
