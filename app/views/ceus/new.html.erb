@@ -33,6 +33,13 @@
               </div>
             </div>
 
+            <!-- Certificate Upload Field -->
+            <div class="mb-4">
+              <%= f.label :certificate, "Upload Certificate (PDF or Image)", class: "form-label" %>
+              <%= f.file_field :certificate, class: "form-control" %>
+              <div class="form-text">Optional. Max size 5MB.</div>
+            </div>
+
             <div class="d-flex gap-2 mt-3">
               <%= f.submit "Save CEU", class: "btn btn-primary" %>
               <%= link_to "Cancel", dashboard_path, class: "btn btn-outline-secondary" %>
