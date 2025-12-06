@@ -101,7 +101,7 @@
         </div>
       </div>
 
-      <!-- Section 2: CEU History (THIS IS THE NEW PART) -->
+      <!-- Section 2: CEU History -->
       <div class="card shadow-sm">
         <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
           <h5 class="mb-0">CEU History</h5>
@@ -121,6 +121,7 @@
                     <th>Date</th>
                     <th>Activity / Course</th>
                     <th>Credits</th>
+                    <th>Proof</th>
                     <th></th>
                   </tr>
                 </thead>
@@ -130,6 +131,16 @@
                       <td><%= ceu.date.strftime("%b %d, %Y") %></td>
                       <td><%= ceu.title %></td>
                       <td><span class="badge bg-light text-dark border"><%= ceu.duration %></span></td>
+                      
+                      <!-- Certificate Column -->
+                      <td>
+                        <% if ceu.certificate.attached? %>
+                          <%= link_to "View", rails_blob_path(ceu.certificate, disposition: "preview"), target: "_blank", class: "btn btn-sm btn-outline-secondary" %>
+                        <% else %>
+                          <span class="text-muted small">None</span>
+                        <% end %>
+                      </td>
+
                       <td class="text-end">
                         <%= button_to "Remove", ceu_path(ceu), method: :delete, class: "btn btn-sm btn-outline-danger", data: { turbo_confirm: "Delete this record?" } %>
                       </td>
