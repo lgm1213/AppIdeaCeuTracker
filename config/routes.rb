@@ -1,23 +1,27 @@
 Rails.application.routes.draw do
-  # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
-  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
-
+  get "profiles/edit"
+  get "profiles/update"
   root "home#index"
 
   #Dashboard(Protected Area) Routes
   get "dashboard/index", to: "dashboard#index", as: "dashboard"
 
+  #Professional License & CEU Management Routes
+  resources :professional_licenses, only: [:new, :create, :edit, :update, :destroy]
+  resources :ceus, only: [:new, :create, :edit, :update, :destroy]
+
+  #User Profile Management Routes
+  resource :profile, only: [:edit, :update]
+
+  #Authentication & Registration Routes
   get "/login", to: "sessions#new"
   post "/login", to: "sessions#create"
   delete "/logout", to: "sessions#destroy"
 
-  # Registration Routes
   get "/signup", to: "registrations#new", as: "signup" 
   post "/signup", to: "registrations#create"
 
-  resources :professional_licenses
-  resources :ceus
+
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
