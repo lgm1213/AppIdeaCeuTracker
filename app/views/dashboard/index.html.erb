@@ -5,6 +5,7 @@
       <div class="card shadow-sm">
         <div class="card-body text-center">
           <div class="bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 80px; height: 80px; font-size: 2rem;">
+            <!-- Initials -->
             <%= @profile.first_name.first %><%= @profile.last_name.first %>
           </div>
           
@@ -14,7 +15,9 @@
           <hr>
           
           <div class="d-grid gap-2">
-            <button class="btn btn-outline-primary btn-sm">Edit Profile</button>
+            <!-- UPDATED: Now links to the Edit Profile route -->
+            <%= link_to "Edit Profile", edit_profile_path, class: "btn btn-outline-primary btn-sm" %>
+            
             <%= button_to "Log Out", logout_path, method: :delete, class: "btn btn-outline-danger btn-sm w-100" %>
           </div>
         </div>
@@ -39,7 +42,6 @@
           <div class="card bg-success text-white h-100">
             <div class="card-body">
               <h6 class="card-title opacity-75">Total CEUs</h6>
-              <!-- Updated to sum the duration -->
               <h2 class="display-6 fw-bold mb-0"><%= @ceus.sum(:duration) %></h2>
             </div>
           </div>
@@ -48,7 +50,8 @@
           <div class="card bg-warning text-dark h-100">
             <div class="card-body">
               <h6 class="card-title opacity-75">Licenses Expiring Soon</h6>
-              <h2 class="display-6 fw-bold mb-0">0</h2>
+              <h2 class="display-6 fw-bold mb-0"><%= @expiring_licenses_count %></h2>
+              <div class="small mt-1 opacity-75">(Next 90 Days)</div>
             </div>
           </div>
         </div>
@@ -90,6 +93,7 @@
                         </span>
                       </td>
                       <td class="text-end">
+                        <%= link_to "Edit", edit_professional_license_path(license), class: "btn btn-sm btn-outline-secondary me-1" %>
                         <%= button_to "Remove", professional_license_path(license), method: :delete, class: "btn btn-sm btn-outline-danger", data: { turbo_confirm: "Are you sure?" } %>
                       </td>
                     </tr>
@@ -131,8 +135,6 @@
                       <td><%= ceu.date.strftime("%b %d, %Y") %></td>
                       <td><%= ceu.title %></td>
                       <td><span class="badge bg-light text-dark border"><%= ceu.duration %></span></td>
-                      
-                      <!-- Certificate Column -->
                       <td>
                         <% if ceu.certificate.attached? %>
                           <%= link_to "View", rails_blob_path(ceu.certificate, disposition: "preview"), target: "_blank", class: "btn btn-sm btn-outline-secondary" %>
@@ -140,8 +142,8 @@
                           <span class="text-muted small">None</span>
                         <% end %>
                       </td>
-
                       <td class="text-end">
+                        <%= link_to "Edit", edit_ceu_path(ceu), class: "btn btn-sm btn-outline-secondary me-1" %>
                         <%= button_to "Remove", ceu_path(ceu), method: :delete, class: "btn btn-sm btn-outline-danger", data: { turbo_confirm: "Delete this record?" } %>
                       </td>
                     </tr>

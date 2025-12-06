@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   resources :ceus, only: [:new, :create, :edit, :update, :destroy]
 
   #User Profile Management Routes
-  resource :profile, only: [:edit, :update]
+  resource :profile, only: [:edit, :show, :update]
 
   #Authentication & Registration Routes
   get "/login", to: "sessions#new"
