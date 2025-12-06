@@ -16,7 +16,7 @@
           
           <div class="d-grid gap-2">
             <!-- UPDATED: Now links to the Edit Profile route -->
-            <%= link_to "Edit Profile", edit_profile_path, class: "btn btn-outline-primary btn-sm" %>
+            <%= link_to "View Profile", profile_path, class: "btn btn-outline-primary btn-sm" %>
             
             <%= button_to "Log Out", logout_path, method: :delete, class: "btn btn-outline-danger btn-sm w-100" %>
           </div>
@@ -92,9 +92,11 @@
                           <%= license.status_label %>
                         </span>
                       </td>
-                      <td class="text-end">
-                        <%= link_to "Edit", edit_professional_license_path(license), class: "btn btn-sm btn-outline-secondary me-1" %>
-                        <%= button_to "Remove", professional_license_path(license), method: :delete, class: "btn btn-sm btn-outline-danger", data: { turbo_confirm: "Are you sure?" } %>
+                      <td class="text-end pe-4">
+                        <div class="d-flex justify-content-end gap-1">
+                          <%= link_to "Edit", edit_professional_license_path(license), class: "btn btn-sm btn-outline-secondary" %>
+                          <%= button_to "Remove", professional_license_path(license), method: :delete, class: "btn btn-sm btn-outline-danger", data: { turbo_confirm: "Are you sure?" } %>
+                        </div>
                       </td>
                     </tr>
                   <% end %>
@@ -142,9 +144,11 @@
                           <span class="text-muted small">None</span>
                         <% end %>
                       </td>
-                      <td class="text-end">
-                        <%= link_to "Edit", edit_ceu_path(ceu), class: "btn btn-sm btn-outline-secondary me-1" %>
-                        <%= button_to "Remove", ceu_path(ceu), method: :delete, class: "btn btn-sm btn-outline-danger", data: { turbo_confirm: "Delete this record?" } %>
+                      <td class="text-end pe-4">
+                        <div class="d-flex justify-content-end gap-1">
+                          <%= link_to "Edit", edit_ceu_path(ceu), class: "btn btn-sm btn-outline-secondary me-1" %>
+                          <%= button_to "Remove", ceu_path(ceu), method: :delete, class: "btn btn-sm btn-outline-danger", data: { turbo_confirm: "Delete this record?" } %>
+                        </div>
                       </td>
                     </tr>
                   <% end %>
