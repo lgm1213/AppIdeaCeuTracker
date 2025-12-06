@@ -1,2 +1,90 @@
-<h1>Profiles#edit</h1>
-<p>Find me in app/views/profiles/edit.html.erb</p>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-sm">
+        <div class="card-body p-4">
+          <h3 class="mb-4">Edit Profile</h3>
+
+          <%= form_with model: @profile, url: profile_path, method: :patch, local: true do |f| %>
+            
+            <% if @profile.errors.any? %>
+              <div class="alert alert-danger">
+                <ul class="mb-0">
+                  <% @profile.errors.full_messages.each do |msg| %>
+                    <li><%= msg %></li>
+                  <% end %>
+                </ul>
+              </div>
+            <% end %>
+
+            <!-- Section: Identity -->
+            <h5 class="text-muted border-bottom pb-2 mb-3">Identity</h5>
+            <div class="row g-2 mb-3">
+              <div class="col-sm-5">
+                <%= f.label :first_name, "First Name", class: "form-label" %>
+                <%= f.text_field :first_name, class: "form-control" %>
+              </div>
+              <div class="col-sm-2">
+                <%= f.label :middle_initial, "MI", class: "form-label" %>
+                <%= f.text_field :middle_initial, class: "form-control text-center", maxlength: 1 %>
+              </div>
+              <div class="col-sm-5">
+                <%= f.label :last_name, "Last Name", class: "form-label" %>
+                <%= f.text_field :last_name, class: "form-control" %>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <%= f.label :birthdate, "Date of Birth", class: "form-label" %>
+                <%= f.date_field :birthdate, class: "form-control" %>
+              </div>
+            </div>
+
+            <!-- Section: Contact & Bio -->
+            <h5 class="text-muted border-bottom pb-2 mb-3 mt-4">About</h5>
+            <div class="mb-3">
+              <%= f.label :bio, "Professional Bio", class: "form-label" %>
+              <%= f.text_area :bio, rows: 3, class: "form-control", placeholder: "Brief summary of your career, specialties, or goals..." %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :phone_number, class: "form-label" %>
+              <%= f.telephone_field :phone_number, class: "form-control", placeholder: "(555) 123-4567" %>
+            </div>
+
+            <!-- Section: Address -->
+            <h5 class="text-muted border-bottom pb-2 mb-3 mt-4">Mailing Address</h5>
+            <div class="mb-3">
+              <%= f.label :address_line_1, "Street Address", class: "form-label" %>
+              <%= f.text_field :address_line_1, class: "form-control", placeholder: "123 Main St" %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :address_line_2, "Apt, Suite, Unit (Optional)", class: "form-label" %>
+              <%= f.text_field :address_line_2, class: "form-control" %>
+            </div>
+
+            <div class="row g-2">
+              <div class="col-md-6">
+                <%= f.label :city, class: "form-label" %>
+                <%= f.text_field :city, class: "form-control" %>
+              </div>
+              <div class="col-md-2">
+                <%= f.label :state, "State", class: "form-label" %>
+                <%= f.text_field :state, class: "form-control", maxlength: 2 %>
+              </div>
+              <div class="col-md-4">
+                <%= f.label :zip_code, "Zip Code", class: "form-label" %>
+                <%= f.text_field :zip_code, class: "form-control" %>
+              </div>
+            </div>
+
+            <div class="d-flex gap-2 mt-4">
+              <%= f.submit "Save Changes", class: "btn btn-primary" %>
+              <%= link_to "Cancel", dashboard_path, class: "btn btn-outline-secondary" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
