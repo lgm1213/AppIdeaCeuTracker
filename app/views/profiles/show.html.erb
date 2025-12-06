@@ -1,0 +1,109 @@
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      
+      <!-- Profile Card -->
+      <div class="card shadow-sm">
+        <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+          <h4 class="mb-0 text-primary">User Profile</h4>
+          <div>
+            <%= link_to "Back to Dashboard", dashboard_path, class: "btn btn-outline-secondary me-2" %>
+            <%= link_to "Edit Profile", edit_profile_path, class: "btn btn-primary" %>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <div class="row mb-4">
+            <div class="col-md-12 text-center pb-4 border-bottom">
+              <!-- Initials Circle -->
+              <div class="d-inline-flex align-items-center justify-content-center bg-light text-primary rounded-circle mb-3" style="width: 80px; height: 80px; font-size: 2rem; font-weight: bold;">
+                <% if @profile.first_name.present? && @profile.last_name.present? %>
+                  <%= @profile.first_name.first %><%= @profile.last_name.first %>
+                <% else %>
+                  <i class="bi bi-person"></i>
+                <% end %>
+              </div>
+              
+              <h3><%= @profile.full_name.presence || "New User" %></h3>
+              <p class="text-muted">
+                <% if @profile.city.present? && @profile.state.present? %>
+                  <%= @profile.city %>, <%= @profile.state %>
+                <% else %>
+                  Location not set
+                <% end %>
+              </p>
+            </div>
+          </div>
+
+          <!-- Identity Section -->
+          <h5 class="text-uppercase text-muted small fw-bold mb-3">Identity</h5>
+          <div class="row g-3 mb-4">
+            <div class="col-md-4">
+              <label class="form-label text-muted small">First Name</label>
+              <p class="fw-medium"><%= @profile.first_name.presence || "-" %></p>
+            </div>
+            <div class="col-md-2">
+              <label class="form-label text-muted small">MI</label>
+              <p class="fw-medium"><%= @profile.middle_initial.presence || "-" %></p>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label text-muted small">Last Name</label>
+              <p class="fw-medium"><%= @profile.last_name.presence || "-" %></p>
+            </div>
+            <div class="col-md-2">
+              <label class="form-label text-muted small">Date of Birth</label>
+              <p class="fw-medium">
+                <!-- Safe navigation operator (&.) prevents crash if birthdate is nil -->
+                <%= @profile.birthdate&.strftime("%b %d, %Y") || "-" %>
+              </p>
+            </div>
+          </div>
+
+          <hr class="my-4">
+
+          <!-- Contact Section -->
+          <h5 class="text-uppercase text-muted small fw-bold mb-3">Contact Info</h5>
+          <div class="row g-3 mb-4">
+            <div class="col-md-6">
+              <label class="form-label text-muted small">Phone Number</label>
+              <p class="fw-medium"><%= @profile.phone_number.presence || "Not provided" %></p>
+            </div>
+            <div class="col-md-12">
+              <label class="form-label text-muted small">Bio</label>
+              <p class="text-secondary"><%= @profile.bio.presence || "No bio added yet." %></p>
+            </div>
+          </div>
+
+          <hr class="my-4">
+
+          <!-- Address Section -->
+          <h5 class="text-uppercase text-muted small fw-bold mb-3">Address</h5>
+          <div class="row g-3">
+            <div class="col-12">
+              <label class="form-label text-muted small">Street Address</label>
+              <p class="fw-medium">
+                <%= @profile.address_line_1.presence || "-" %>
+                <% if @profile.address_line_2.present? %>
+                  <br><span class="text-muted"><%= @profile.address_line_2 %></span>
+                <% end %>
+              </p>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label text-muted small">City</label>
+              <p class="fw-medium"><%= @profile.city.presence || "-" %></p>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label text-muted small">State</label>
+              <p class="fw-medium"><%= @profile.state.presence || "-" %></p>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label text-muted small">Zip Code</label>
+              <p class="fw-medium"><%= @profile.zip_code.presence || "-" %></p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
