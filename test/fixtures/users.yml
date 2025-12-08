@@ -1,9 +1,13 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+# test/fixtures/users.yml
+
+# We use ERB to generate a valid BCrypt hash for the password "password"
+# This prevents the 'no column named password' error.
 
 one:
-  email: MyString
-  password: MyString
+  email_address: one@example.com
+  password_digest: <%= BCrypt::Password.create('password') %>
+  # Add other required fields if you have them (e.g., created_at: <%= Time.now %>)
 
 two:
-  email: MyString
-  password: MyString
+  email_address: two@example.com
+  password_digest: <%= BCrypt::Password.create('password') %>
