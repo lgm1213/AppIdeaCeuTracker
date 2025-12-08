@@ -22,7 +22,8 @@ class ReportsController < ApplicationController
       # Add Summary Section
       csv << ["CEU TRACKING REPORT"]
       csv << ["Generated on", Date.today.strftime("%B %d, %Y")]
-      csv << ["User", current_user.profile&.full_name || current_user.email_address]
+      # FIX: Use user_profile instead of profile
+      csv << ["User", current_user.user_profile&.full_name || current_user.email_address]
       csv << [] # Blank line
 
       # Add Licenses Section
@@ -53,13 +54,15 @@ class ReportsController < ApplicationController
   end
 
   def generate_pdf
-    Prawn::Document.new do |pdf|
+    # Configure Prawn to use landscape mode
+    Prawn::Document.new(page_layout: :landscape) do |pdf|
       # Header
       pdf.font_size 20
       pdf.text "Professional Development Report", style: :bold
       pdf.font_size 12
       pdf.text "Generated on: #{Date.today.strftime('%B %d, %Y')}"
-      pdf.text "User: #{current_user.profile&.full_name}"
+      # FIX: Use user_profile instead of profile
+      pdf.text "User: #{current_user.user_profile&.full_name || current_user.email_address}"
       pdf.move_down 20
 
       # Licenses Table
