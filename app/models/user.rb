@@ -12,5 +12,5 @@ class User < ApplicationRecord
   has_many :professional_licenses, dependent: :destroy
   has_many :ceus, dependent: :destroy
 
-  validates :email, presence: true, uniqueness: true
+  validates :email_address, presence: true, uniqueness: true
 end

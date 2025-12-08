@@ -23,7 +23,7 @@ class RegistrationsController < ApplicationController
   def registration_params
     # Explicitly allows the nested attributes for user_profile
     params.require(:user).permit(
-      :email,
+      :email_address,
       :password,
       :password_confirmation,
       user_profile_attributes: [
