@@ -1,94 +1,95 @@
-<div class="container mt-4">
+<div class="container py-5">
   <div class="row">
-    <!-- Sidebar: User Profile Summary -->
-    <div class="col-md-4 col-lg-3 mb-4">
-      <div class="card shadow-sm">
-        <div class="card-body text-center">
-          <div class="bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 80px; height: 80px; font-size: 2rem;">
-            <!-- Initials -->
-            <%= @profile.first_name.first %><%= @profile.last_name.first %>
+    
+    <!-- Sidebar / Profile Summary -->
+    <div class="col-lg-3 mb-4">
+      <div class="card shadow-sm text-center h-100">
+        <div class="card-body d-flex flex-column align-items-center justify-content-center">
+          <div class="d-inline-flex align-items-center justify-content-center bg-light text-primary rounded-circle mb-3" style="width: 80px; height: 80px; font-size: 2rem; font-weight: bold;">
+            <% if @profile.first_name.present? %>
+              <%= @profile.first_name.first %><%= @profile.last_name.first %>
+            <% else %>
+              <i class="bi bi-person"></i>
+            <% end %>
           </div>
           
-          <h5 class="card-title mb-1"><%= @profile.first_name %> <%= @profile.last_name %></h5>
-          <p class="text-muted small mb-3"><%= @profile.city %>, <%= @profile.state %></p>
+          <h5 class="card-title mb-0"><%= @profile.full_name.presence || "User" %></h5>
+          <p class="card-text text-muted small mb-4">
+            <% if @profile.city.present? %>
+              <%= @profile.city %>, <%= @profile.state %>
+            <% else %>
+              Location not set
+            <% end %>
+          </p>
           
-          <hr>
-          
-          <div class="d-grid gap-2">
-            <!-- UPDATED: Now links to the Edit Profile route -->
-            <%= link_to "View Profile", profile_path, class: "btn btn-outline-primary btn-sm" %>
-            
-            <%= button_to "Log Out", logout_path, method: :delete, class: "btn btn-outline-danger btn-sm w-100" %>
+          <div class="d-grid gap-2 w-100">
+            <%= link_to "Edit Profile", edit_profile_path, class: "btn btn-outline-primary" %>
+            <%= button_to "Log Out", logout_path, method: :delete, class: "btn btn-outline-danger w-100" %>
           </div>
         </div>
       </div>
     </div>
 
     <!-- Main Content -->
-    <div class="col-md-8 col-lg-9">
-      <h2 class="mb-4">My Dashboard</h2>
-
+    <div class="col-lg-9">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold mb-0">Dashboard</h2>
+      </div>
+      
       <!-- Stats Row -->
-      <div class="row g-3 mb-4">
-        <div class="col-sm-4">
-          <div class="card bg-primary text-white h-100">
+      <div class="row g-3 mb-5">
+        <div class="col-md-4">
+          <div class="card bg-primary text-white h-100 shadow-sm">
             <div class="card-body">
-              <h6 class="card-title opacity-75">Active Licenses</h6>
-              <h2 class="display-6 fw-bold mb-0"><%= @licenses.count %></h2>
+              <h6 class="card-subtitle mb-2 opacity-75">Active Licenses</h6>
+              <h2 class="card-title mb-0 display-6 fw-bold"><%= @licenses.count %></h2>
             </div>
           </div>
         </div>
-        <div class="col-sm-4">
-          <div class="card bg-success text-white h-100">
+        <div class="col-md-4">
+          <div class="card bg-success text-white h-100 shadow-sm">
             <div class="card-body">
-              <h6 class="card-title opacity-75">Total CEUs</h6>
-              <h2 class="display-6 fw-bold mb-0"><%= @ceus.sum(:duration) %></h2>
+              <h6 class="card-subtitle mb-2 opacity-75">Total CEUs</h6>
+              <h2 class="card-title mb-0 display-6 fw-bold"><%= @ceus.sum(:duration) %></h2>
             </div>
           </div>
         </div>
-        <div class="col-sm-4">
-          <div class="card bg-warning text-dark h-100">
+        <div class="col-md-4">
+          <div class="card bg-warning text-dark h-100 shadow-sm">
             <div class="card-body">
-              <h6 class="card-title opacity-75">Licenses Expiring Soon</h6>
-              <h2 class="display-6 fw-bold mb-0"><%= @expiring_licenses_count %></h2>
-              <div class="small mt-1 opacity-75">(Next 90 Days)</div>
+              <h6 class="card-subtitle mb-2 text-dark opacity-75">Expiring (90 Days)</h6>
+              <h2 class="card-title mb-0 display-6 fw-bold"><%= @expiring_licenses_count %></h2>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Section 1: Licenses -->
-      <div class="card shadow-sm mb-4">
-        <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
-          <h5 class="mb-0">Professional Licenses</h5>
-          <%= link_to "+ Add License", new_professional_license_path, class: "btn btn-primary btn-sm" %>
+      <!-- Licenses Section -->
+      <div class="card shadow-sm mb-5">
+        <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">Licenses</h5>
+          <%= link_to "+ Add License", new_professional_license_path, class: "btn btn-sm btn-primary rounded-pill px-3" %>
         </div>
-        <div class="card-body">
-          <% if @licenses.empty? %>
-            <div class="text-center py-4 text-muted">
-              <p>You haven't added any professional licenses yet.</p>
-              <%= link_to "Add Your First License", new_professional_license_path, class: "btn btn-outline-primary btn-sm" %>
-            </div>
-          <% else %>
+        <div class="card-body p-0">
+          <% if @licenses.any? %>
             <div class="table-responsive">
-              <table class="table table-hover text-start align-middle mb-0">
-                <thead>
+              <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
                   <tr>
-                    <th>Authority</th>
-                    <th>Number</th>
-                    <th>Expires</th>
+                    <th class="ps-4">Authority / Board</th>
+                    <th>License #</th>
                     <th>Status</th>
-                    <th></th>
+                    <th class="text-end pe-4">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   <% @licenses.each do |license| %>
                     <tr>
-                      <td><%= license.issuing_authority.name %></td>
-                      <td><%= license.license_number %></td>
-                      <td><%= license.expiration_date.strftime("%b %d, %Y") %></td>
+                      <td class="ps-4 fw-medium text-primary"><%= license.issuing_authority.name %></td>
+                      <td class="text-muted"><%= license.license_number %></td>
                       <td>
-                        <span class="badge bg-<%= license.status_label == 'Active' ? 'success' : 'warning' %>">
+                        <% status_class = license.status_label == 'Active' ? 'bg-success-subtle text-success' : 'bg-warning-subtle text-warning-emphasis' %>
+                        <span class="badge rounded-pill <%= status_class %>">
                           <%= license.status_label %>
                         </span>
                       </td>
@@ -103,57 +104,83 @@
                 </tbody>
               </table>
             </div>
+          <% else %>
+            <div class="p-5 text-center text-muted">
+              <p class="mb-0">No licenses added yet.</p>
+            </div>
           <% end %>
         </div>
       </div>
 
-      <!-- Section 2: CEU History -->
+      <!-- CEU History Section -->
       <div class="card shadow-sm">
-        <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+        <div class="card-header bg-white py-3 d-flex flex-wrap justify-content-between align-items-center gap-2">
           <h5 class="mb-0">CEU History</h5>
-          <%= link_to "+ Log CEU", new_ceu_path, class: "btn btn-success btn-sm text-white" %>
-        </div>
-        <div class="card-body">
-          <% if @ceus.empty? %>
-            <div class="text-center py-4 text-muted">
-              <p>No continuing education recorded yet.</p>
-              <%= link_to "Log Your First Class", new_ceu_path, class: "btn btn-outline-success btn-sm" %>
+          
+          <div class="d-flex gap-2">
+            <!-- EXPORT BUTTONS START -->
+            <div class="btn-group" role="group">
+              <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-download me-1"></i> Export
+              </button>
+              <ul class="dropdown-menu">
+                <li>
+                  <%= link_to export_report_path(format: :csv), class: "dropdown-item" do %>
+                    <i class="bi bi-filetype-csv me-2"></i> Download CSV
+                  <% end %>
+                </li>
+                <li>
+                  <%= link_to export_report_path(format: :pdf), class: "dropdown-item", target: "_blank" do %>
+                    <i class="bi bi-file-earmark-pdf me-2"></i> Download PDF
+                  <% end %>
+                </li>
+              </ul>
             </div>
-          <% else %>
+            <!-- EXPORT BUTTONS END -->
+
+            <%= link_to "+ Log Class", new_ceu_path, class: "btn btn-sm btn-success rounded-pill px-3" %>
+          </div>
+        </div>
+        <div class="card-body p-0">
+          <% if @ceus.any? %>
             <div class="table-responsive">
-              <table class="table table-hover text-start align-middle mb-0">
-                <thead>
+              <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
                   <tr>
-                    <th>Date</th>
-                    <th>Activity / Course</th>
+                    <th class="ps-4">Date</th>
+                    <th>Title</th>
                     <th>Credits</th>
                     <th>Proof</th>
-                    <th></th>
+                    <th class="text-end pe-4">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <% @ceus.order(date: :desc).each do |ceu| %>
+                  <% @ceus.each do |ceu| %>
                     <tr>
-                      <td><%= ceu.date.strftime("%b %d, %Y") %></td>
-                      <td><%= ceu.title %></td>
-                      <td><span class="badge bg-light text-dark border"><%= ceu.duration %></span></td>
+                      <td class="ps-4 text-muted"><%= ceu.date.strftime("%b %d, %Y") %></td>
+                      <td class="fw-medium"><%= ceu.title %></td>
+                      <td><%= ceu.duration %></td>
                       <td>
                         <% if ceu.certificate.attached? %>
-                          <%= link_to "View", rails_blob_path(ceu.certificate, disposition: "preview"), target: "_blank", class: "btn btn-sm btn-outline-secondary" %>
+                          <%= link_to "View PDF", rails_blob_path(ceu.certificate, disposition: "preview"), target: "_blank", class: "btn btn-sm btn-link text-decoration-none p-0" %>
                         <% else %>
-                          <span class="text-muted small">None</span>
+                          <span class="text-muted small">-</span>
                         <% end %>
                       </td>
                       <td class="text-end pe-4">
                         <div class="d-flex justify-content-end gap-1">
-                          <%= link_to "Edit", edit_ceu_path(ceu), class: "btn btn-sm btn-outline-secondary me-1" %>
-                          <%= button_to "Remove", ceu_path(ceu), method: :delete, class: "btn btn-sm btn-outline-danger", data: { turbo_confirm: "Delete this record?" } %>
+                          <%= link_to "Edit", edit_ceu_path(ceu), class: "btn btn-sm btn-outline-secondary" %>
+                          <%= button_to "Remove", ceu_path(ceu), method: :delete, class: "btn btn-sm btn-outline-danger", data: { turbo_confirm: "Are you sure?" } %>
                         </div>
                       </td>
                     </tr>
                   <% end %>
                 </tbody>
               </table>
+            </div>
+          <% else %>
+            <div class="p-5 text-center text-muted">
+              <p class="mb-0">No CEUs logged yet.</p>
             </div>
           <% end %>
         </div>
