@@ -97,7 +97,7 @@ class ReportsController < ApplicationController
         pdf.table(ceu_data, header: true, width: pdf.bounds.width) do
           row(0).style(font_style: :bold, background_color: "EEEEEE")
           column(0).width = 100
-          column(2).width = 60
+          column(2).width = 80
           cells.padding = 8
           cells.borders = [:bottom]
         end
