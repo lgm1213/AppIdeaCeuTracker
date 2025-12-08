@@ -1,13 +1,42 @@
-<div class="container mt-5 text-center">
-  <h1>AppIdea CEU Tracker</h1>
+<div class="position-relative overflow-hidden bg-white">
+  <div class="container py-5">
+    <div class="row py-lg-5">
+      <div class="col-lg-8 col-xl-7 mx-auto mx-lg-0 text-center text-lg-start pt-lg-5 pb-lg-5">
+        
+        <!-- Main Heading -->
+        <main class="my-4">
+          <h1 class="display-4 fw-bold text-dark mb-3">
+            <span class="d-block d-xl-inline">Track your CEUs</span>
+            <!-- 'text-primary' uses the Bootstrap default blue/indigo color -->
+            <span class="d-block text-primary d-xl-inline">without the headache.</span>
+          </h1>
+          
+          <p class="lead text-secondary mb-4 col-md-10 mx-auto mx-lg-0">
+            Never miss a license renewal. Upload certificates, track credits, and prove compliance in seconds.
+          </p>
+          
+          <!-- Buttons Area -->
+          <div class="d-grid gap-2 d-sm-flex justify-content-sm-center justify-content-lg-start mt-4">
+            <% if current_user %>
+              <div class="shadow-sm rounded">
+                <%= link_to "Go to Dashboard", dashboard_path, class: "btn btn-primary btn-lg px-5 py-3 fw-bold w-100 w-sm-auto" %>
+              </div>
+            <% else %>
+              <div class="shadow-sm rounded">
+                <%= link_to "Get Started", signup_path, class: "btn btn-primary btn-lg px-5 py-3 fw-bold w-100 w-sm-auto" %>
+              </div>
+              
+              <div class="shadow-sm rounded">
+                <!-- 'btn-light' + 'text-primary' mimics the bg-indigo-100 look -->
+                <%= link_to "Log In", login_path, class: "btn btn-light text-primary btn-lg px-5 py-3 fw-bold w-100 w-sm-auto border" %>
+              </div>
+            <% end %>
+          </div>
+        </main>
 
-  <% if current_user %>
-    <div class="alert alert-success mt-4">
-      Welcome back, <strong><%= current_user.email %></strong>!
+      </div>
+      
+      <!-- For future to add an image on the right in the original design, add a col-lg-4 div here to hold it. -->
     </div>
-    <%= button_to "Log Out", logout_path, method: :delete, class: "btn btn-danger" %>
-  <% else %>
-    <p class="lead mt-3">Please log in to manage your CEUs.</p>
-    <%= link_to "Log In", login_path, class: "btn btn-primary btn-lg" %>
-  <% end %>
+  </div>
 </div>
