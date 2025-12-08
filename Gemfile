@@ -43,8 +43,8 @@ gem "thruster", require: false
 gem "image_processing", "~> 1.2"
 
 # Reporting related gems, creation: pdfs, csvs, excels,
-gem 'prawn'
-gem 'prawn-table'
+gem "prawn"
+gem "prawn-table"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

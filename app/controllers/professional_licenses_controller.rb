@@ -9,7 +9,7 @@ class ProfessionalLicensesController < ApplicationController
 
   def create
     @license = current_user.professional_licenses.build(license_params)
-    
+
     if @license.save
       redirect_to dashboard_path, notice: "License added successfully!"
     else
@@ -29,8 +29,8 @@ class ProfessionalLicensesController < ApplicationController
 
   def license_params
     params.require(:professional_license).permit(
-      :issuing_authority_id, 
-      :license_number, 
+      :issuing_authority_id,
+      :license_number,
       :expiration_date
     )
   end

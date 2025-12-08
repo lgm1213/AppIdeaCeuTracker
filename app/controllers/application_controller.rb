@@ -12,8 +12,8 @@ class ApplicationController < ActionController::Base
   def current_user
     @current_user ||= User.find_by(id: session[:user_id]) if session[:user_id]
   end
-  
-  #Helper method for Dashboard access control
+
+  # Helper method for Dashboard access control
   def authenticate_user!
     unless current_user
       redirect_to login_path, alert: "You must be logged in to access that page."

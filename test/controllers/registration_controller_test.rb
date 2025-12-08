@@ -29,14 +29,14 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
     # Follow the redirect to root (dashboard)
     assert_redirected_to root_path
     follow_redirect!
-    
+
     # Check flash message
     assert_equal "Welcome, Florence!", flash[:notice]
   end
 
   test "should not create user with invalid attributes" do
     # Verify that counts do NOT change
-    assert_no_difference ["User.count", "UserProfile.count"] do
+    assert_no_difference [ "User.count", "UserProfile.count" ] do
       post signup_path, params: {
         user: {
           email: "", # Invalid: empty email
