@@ -3,7 +3,8 @@
     
     <!-- Sidebar / Profile Summary -->
     <div class="col-lg-3 mb-4">
-      <div class="card shadow-sm text-center h-100">
+      <!-- REMOVED 'h-100' so the card doesn't stretch to match the right column -->
+      <div class="card shadow-sm text-center">
         <div class="card-body d-flex flex-column align-items-center justify-content-center">
           <div class="d-inline-flex align-items-center justify-content-center bg-light text-primary rounded-circle mb-3" style="width: 80px; height: 80px; font-size: 2rem; font-weight: bold;">
             <% if @profile.first_name.present? %>
@@ -118,7 +119,7 @@
           <h5 class="mb-0">CEU History</h5>
           
           <div class="d-flex gap-2">
-            <!-- EXPORT BUTTONS START -->
+            <!-- EXPORT BUTTONS -->
             <div class="btn-group" role="group">
               <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="bi bi-download me-1"></i> Export
@@ -136,7 +137,6 @@
                 </li>
               </ul>
             </div>
-            <!-- EXPORT BUTTONS END -->
 
             <%= link_to "+ Log Class", new_ceu_path, class: "btn btn-sm btn-success rounded-pill px-3" %>
           </div>
