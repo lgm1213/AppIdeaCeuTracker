@@ -1,0 +1,20 @@
+Action Required: License Expiration Warning
+===============================================
+
+Hello <%= @user&.user_profile&.first_name || "User" %>,
+
+This is an automated reminder that your <%= @license&.issuing_authority&.name %> license is set to expire soon.
+
+License Details:
+----------------
+License Number: <%= @license&.license_number %>
+Expiration Date: <%= @license&.expiration_date&.strftime("%B %d, %Y") %>
+Days Remaining: <%= @days_left %> days
+
+Please ensure you have completed all required CEU credits before the expiration date to maintain compliance.
+
+You can view your current CEU status and update your license details here:
+<%= dashboard_url %>
+
+Best regards,
+The App Idea Team

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h2>Action Required: License Expiration Warning</h2>
+    
+    <p>Hello <%= @user&.user_profile&.first_name || "User" %>,</p>
+    
+    <p>
+      This is an automated reminder that your <strong><%= @license&.issuing_authority&.name %></strong> license is set to expire soon.
+    </p>
+
+    <h3>License Details</h3>
+    <ul>
+      <li><strong>License Number:</strong> <%= @license&.license_number %></li>
+      <li><strong>Expiration Date:</strong> <%= @license&.expiration_date&.strftime("%B %d, %Y") %></li>
+      <li><strong>Days Remaining:</strong> <%= @days_left %> days</li>
+    </ul>
+
+    <p>
+      Please ensure you have completed all required CEU credits before the expiration date to maintain compliance.
+    </p>
+
+    <p>
+      You can view your current CEU status and update your license details by logging into your dashboard:
+    </p>
+
+    <p>
+      <%= link_to "Go to Dashboard", dashboard_url %>
+    </p>
+    
+    <p>
+      Best regards,<br>
+      The App Idea Team
+    </p>
+  </body>
+</html>
