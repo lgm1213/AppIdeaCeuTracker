@@ -2,7 +2,7 @@ class SavedEventsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @saved_events = current_user.saved_ceu_events
+    @events = current_user.saved_ceu_events.order(date: :asc)
   end
 
   def create

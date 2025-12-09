@@ -27,7 +27,7 @@ Rails.application.routes.draw do
   resources :events, only: [ :index, :show ]
 
   # Saved Events Routes
-  resources :saved_events, only: [ :create, :destroy ]
+  resources :saved_events, only: [ :create, :destroy, :index ]
 
 
 
