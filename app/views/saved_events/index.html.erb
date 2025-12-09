@@ -40,13 +40,19 @@
               
               <!-- Actions -->
               <div class="mt-auto d-grid gap-2">
+                <%# Find the specific saved_event record ID %>
+                <% saved_record = current_user.saved_events.find_by(ceu_event_id: event.id) %>
+
+                <!-- Mark as Complete Button -->
+                <!-- Passes the event ID to import data, and saved_record ID to delete it later -->
+                <%= link_to new_ceu_path(import_event_id: event.id, saved_event_id: saved_record.id), class: "btn btn-success w-100 d-flex align-items-center justify-content-center gap-2" do %>
+                  <i class="bi bi-check-circle-fill"></i> Complete & Log
+                <% end %>
+                
                 <%= link_to "View Details", event.url.present? ? event.url : "#", target: "_blank", class: "btn btn-outline-primary btn-sm" %>
                 
-                <%# Find the specific saved_event record ID for deletion %>
-                <% saved_record = current_user.saved_events.find_by(ceu_event_id: event.id) %>
-                
-                <%= button_to saved_event_path(saved_record), method: :delete, class: "btn btn-sm btn-light text-danger border w-100 d-flex align-items-center justify-content-center gap-2" do %>
-                  <i class="bi bi-trash"></i> Remove from Saved
+                <%= button_to saved_event_path(saved_record), method: :delete, class: "btn btn-sm btn-link text-danger text-decoration-none w-100 mt-1" do %>
+                  Remove from Saved
                 <% end %>
               </div>
             </div>
