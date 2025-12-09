@@ -1,6 +1,6 @@
 class CeusController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_ceu, only: [:edit, :update, :destroy]
+  before_action :set_ceu, only: [ :edit, :update, :destroy ]
 
 
   def new
@@ -9,12 +9,12 @@ class CeusController < ApplicationController
     # Checks if we are importing data from a Saved Event
     if params[:import_event_id].present?
       event = CeuEvent.find(params[:import_event_id])
-      
+
       # Pre-fill the form data
       @ceu.title = event.title
       @ceu.duration = event.credits
       @ceu.date = event.date
-      
+
       # Stores the ID of the saved_event record so we can delete it after saving
       @remove_saved_id = params[:saved_event_id]
     end

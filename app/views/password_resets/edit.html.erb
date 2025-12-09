@@ -1,0 +1,38 @@
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-5">
+      <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+          <h3 class="mb-3 fw-bold">Reset Password</h3>
+          <p class="text-muted mb-4">Choose a new password for your account.</p>
+
+          <!-- We submit to the update action using PATCH -->
+          <%= form_with model: @user, url: password_reset_path(token: params[:token]), method: :patch, local: true do |f| %>
+            
+            <% if @user.errors.any? %>
+              <div class="alert alert-danger small">
+                <ul class="mb-0 ps-3">
+                  <% @user.errors.full_messages.each do |msg| %>
+                    <li><%= msg %></li>
+                  <% end %>
+                </ul>
+              </div>
+            <% end %>
+
+            <div class="mb-3">
+              <%= f.label :password, "New Password", class: "form-label" %>
+              <%= f.password_field :password, class: "form-control", required: true, minlength: 6 %>
+            </div>
+
+            <div class="mb-3">
+              <%= f.label :password_confirmation, "Confirm New Password", class: "form-label" %>
+              <%= f.password_field :password_confirmation, class: "form-control", required: true %>
+            </div>
+
+            <%= f.submit "Update Password", class: "btn btn-success w-100" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

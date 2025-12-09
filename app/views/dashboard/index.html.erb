@@ -31,7 +31,7 @@
                         events_path, 
                         class: "btn btn-outline-secondary" %>
             
-            <!-- NEW: Saved Events Link -->
+            <!-- Saved Events Link -->
             <%= link_to saved_events_path, class: "btn btn-outline-secondary d-flex align-items-center justify-content-center gap-2" do %>
               <i class="bi bi-bookmark-fill"></i> Saved Items
             <% end %>
@@ -141,23 +141,15 @@
           <h5 class="mb-0">CEU History</h5>
           
           <div class="d-flex gap-2">
-            <!-- EXPORT BUTTONS -->
-            <div class="btn-group" role="group">
-              <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-download me-1"></i> Export
-              </button>
-              <ul class="dropdown-menu">
-                <li>
-                  <%= link_to export_report_path(format: :csv), class: "dropdown-item" do %>
-                    <i class="bi bi-filetype-csv me-2"></i> Download CSV
-                  <% end %>
-                </li>
-                <li>
-                  <%= link_to export_report_path(format: :pdf), class: "dropdown-item", target: "_blank" do %>
-                    <i class="bi bi-file-earmark-pdf me-2"></i> Download PDF
-                  <% end %>
-                </li>
-              </ul>
+            <!-- EXPORT BUTTONS (Direct Links) -->
+            <div class="btn-group" role="group" aria-label="Export Options">
+              <%= link_to export_report_path(format: :csv), class: "btn btn-sm btn-outline-secondary", data: { turbo: false }, title: "Export to CSV" do %>
+                <i class="bi bi-filetype-csv me-1"></i> CSV
+              <% end %>
+              
+              <%= link_to export_report_path(format: :pdf), class: "btn btn-sm btn-outline-secondary", target: "_blank", data: { turbo: false }, title: "Export to PDF" do %>
+                <i class="bi bi-file-earmark-pdf me-1"></i> PDF
+              <% end %>
             </div>
 
             <%= link_to "+ Log Class", 

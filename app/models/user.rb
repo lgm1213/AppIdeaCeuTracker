@@ -16,5 +16,27 @@ class User < ApplicationRecord
   has_many :professional_licenses, dependent: :destroy
   has_many :ceus, dependent: :destroy
 
-  validates :email_address, presence: true, uniqueness: true
+  validates :email_address, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
+
+  # Password Reset Logic
+  
+  def generate_password_reset_token!
+    # Uses update_columns instead of update.
+    # This skips validations (like password requirements) so the token 
+    # ALWAYS saves, even if the user record has other issues.
+    update_columns(
+      reset_token: SecureRandom.urlsafe_base64, 
+      reset_sent_at: Time.current
+    )
+  end
+
+  def password_reset_expired?
+    # Token expires after 2 hours
+    reset_sent_at.nil? || reset_sent_at < 2.hours.ago
+  end
+  
+  def clear_password_reset_token!
+    update(reset_token: nil, reset_sent_at: nil)
+  end
+
 end
