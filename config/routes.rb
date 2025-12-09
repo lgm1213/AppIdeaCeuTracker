@@ -25,7 +25,7 @@ Rails.application.routes.draw do
 
   # Search / Events Routes
   resources :events, only: [ :index, :show ]
-  
+
   # Saved Events Routes
   resources :saved_events, only: [ :create, :destroy ]
 

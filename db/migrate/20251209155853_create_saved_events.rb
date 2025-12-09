@@ -7,6 +7,6 @@ class CreateSavedEvents < ActiveRecord::Migration[8.1]
       t.timestamps
     end
     # Ensure a user can't save the same event twice
-    add_index :saved_events, [:user_id, :ceu_event_id], unique: true
+    add_index :saved_events, [ :user_id, :ceu_event_id ], unique: true
   end
 end
