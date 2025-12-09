@@ -89,8 +89,23 @@
                 </div>
               </div>
               
-              <div class="mt-auto d-grid">
+              <div class="mt-auto d-grid gap-2">
                 <%= link_to "View Details", event.url.present? ? event.url : "#", target: "_blank", class: "btn btn-outline-primary btn-sm" %>
+                
+                <!-- SAVE FOR LATER LOGIC -->
+                <% saved_record = current_user.saved_events.find_by(ceu_event_id: event.id) %>
+                
+                <% if saved_record %>
+                  <%= button_to saved_event_path(saved_record), method: :delete, class: "btn btn-sm btn-light text-danger border w-100 d-flex align-items-center justify-content-center gap-2" do %>
+                    <i class="bi bi-bookmark-fill"></i> Saved
+                  <% end %>
+                <% else %>
+                  <%= button_to saved_events_path(ceu_event_id: event.id), method: :post, class: "btn btn-sm btn-outline-secondary w-100 d-flex align-items-center justify-content-center gap-2" do %>
+                    <i class="bi bi-bookmark"></i> Save for Later
+                  <% end %>
+                <% end %>
+                <!-- END SAVE LOGIC -->
+                
               </div>
             </div>
           </div>
@@ -113,8 +128,6 @@
       <i class="bi bi-mortarboard display-1 text-muted opacity-25"></i>
       <h4 class="mt-3 text-muted">Ready to learn?</h4>
       <p class="text-muted">Use the filters above to find CEU opportunities near you.</p>
-      <!-- Optional: Link to show all -->
-      <%#= link_to "Browse All Events", events_path(query: ""), class: "btn btn-outline-primary mt-3" %>
     </div>
   <% end %>
 </div>

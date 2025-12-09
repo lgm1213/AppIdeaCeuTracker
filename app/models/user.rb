@@ -2,6 +2,10 @@ class User < ApplicationRecord
   # Handles password encryption with bcrypt gem
   has_secure_password
 
+  # A user can save MANY CEU Events
+  has_many :saved_events, dependent: :destroy
+  has_many :saved_ceu_events, through: :saved_events, source: :ceu_event
+
   # A user has one bio profile
   has_one :user_profile, dependent: :destroy
 
