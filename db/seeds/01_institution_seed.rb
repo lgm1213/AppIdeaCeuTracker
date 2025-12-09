@@ -20,5 +20,3 @@ IssuingAuthority.find_or_create_by!(name: "Generic Certification Board") do |aut
 end
 
 puts "Done! Created #{IssuingAuthority.count} authorities."
-
-

@@ -3,9 +3,9 @@ class EventsController < ApplicationController
 
   def index
     # Check if the user has submitted any filter parameters
-    has_search = params[:query].present? || 
-                 params[:event_type].present? || 
-                 params[:category].present? || 
+    has_search = params[:query].present? ||
+                 params[:event_type].present? ||
+                 params[:category].present? ||
                  params[:location].present?
 
     if has_search

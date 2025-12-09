@@ -24,7 +24,7 @@ Rails.application.routes.draw do
   get "reports/export", to: "reports#export", as: "export_report"
 
   # Search / Events Routes
-  resources :events, only: [:index, :show]
+  resources :events, only: [ :index, :show ]
 
 
 
