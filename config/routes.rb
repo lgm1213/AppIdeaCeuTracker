@@ -29,7 +29,11 @@ Rails.application.routes.draw do
   # Saved Events Routes
   resources :saved_events, only: [ :create, :destroy, :index ]
 
-
+  # Admin Namespace Routes
+  # Only accessible by admin users
+  namespace :admin do
+    resources :ceu_events, except: [:show]
+  end
 
 
 

@@ -1,0 +1,43 @@
+<div class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Admin: Manage Events</h2>
+    <div>
+      <%= link_to "Back to Dashboard", dashboard_path, class: "btn btn-outline-secondary btn-sm me-2" %>
+      <%= link_to "+ New Event", new_admin_ceu_event_path, class: "btn btn-primary btn-sm" %>
+    </div>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="table-responsive">
+      <table class="table table-hover mb-0 align-middle">
+        <thead class="table-light">
+          <tr>
+            <th class="ps-4">Date</th>
+            <th>Title</th>
+            <th>Provider</th>
+            <th>Type</th>
+            <th>Credits</th>
+            <th class="text-end pe-4">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @events.each do |event| %>
+            <tr>
+              <td class="ps-4 text-muted small"><%= event.date.strftime("%b %d, %Y") %></td>
+              <td class="fw-bold"><%= event.title %></td>
+              <td><%= event.provider %></td>
+              <td><span class="badge bg-light text-dark border"><%= event.event_type %></span></td>
+              <td><%= event.credits %></td>
+              <td class="text-end pe-4">
+                <div class="d-flex justify-content-end gap-1">
+                  <%= link_to "Edit", edit_admin_ceu_event_path(event), class: "btn btn-sm btn-outline-secondary" %>
+                  <%= button_to "Delete", admin_ceu_event_path(event), method: :delete, class: "btn btn-sm btn-outline-danger", data: { turbo_confirm: "Delete this event?" } %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
