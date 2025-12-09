@@ -32,7 +32,7 @@ Rails.application.routes.draw do
   # Admin Namespace Routes
   # Only accessible by admin users
   namespace :admin do
-    resources :ceu_events, except: [:show]
+    resources :ceu_events, except: [ :show ]
   end
 
 

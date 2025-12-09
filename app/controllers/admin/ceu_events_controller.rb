@@ -1,6 +1,6 @@
 module Admin
   class CeuEventsController < BaseController
-    before_action :set_event, only: [:edit, :update, :destroy]
+    before_action :set_event, only: [ :edit, :update, :destroy ]
 
     def index
       @events = CeuEvent.order(date: :desc)
