@@ -20,7 +20,7 @@ class PasswordResetsController < ApplicationController
 
   def edit
     @user = User.find_by(reset_token: params[:token])
-    
+
     if @user
       puts "🔍 DEBUG: Token Found for user #{@user.email_address}"
       puts "   - Sent At: #{@user.reset_sent_at}"
