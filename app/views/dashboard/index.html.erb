@@ -27,15 +27,19 @@
                         edit_profile_path, 
                         class: "btn btn-outline-primary" %>
             
-            <!-- NEW: Search Link in Sidebar -->
             <%= link_to "Find CEUs", 
                         events_path, 
                         class: "btn btn-outline-secondary" %>
+            
+            <!-- NEW: Saved Events Link -->
+            <%= link_to saved_events_path, class: "btn btn-outline-secondary d-flex align-items-center justify-content-center gap-2" do %>
+              <i class="bi bi-bookmark-fill"></i> Saved Items
+            <% end %>
 
             <%= button_to "Log Out", 
                           logout_path, 
                           method: :delete, 
-                          class: "btn btn-outline-danger w-100" %>
+                          class: "btn btn-outline-danger w-100 mt-2" %>
           </div>
         </div>
       </div>
