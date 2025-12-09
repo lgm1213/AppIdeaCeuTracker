@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_08_183003) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_09_143802) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -40,6 +40,23 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_08_183003) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "ceu_events", force: :cascade do |t|
+    t.string "category"
+    t.datetime "created_at", null: false
+    t.decimal "credits", precision: 4, scale: 2
+    t.datetime "date"
+    t.text "description"
+    t.string "event_type"
+    t.string "location"
+    t.string "provider"
+    t.string "timestamps"
+    t.string "title"
+    t.datetime "updated_at", null: false
+    t.string "url"
+    t.index ["category"], name: "index_ceu_events_on_category"
+    t.index ["event_type"], name: "index_ceu_events_on_event_type"
   end
 
   create_table "ceus", force: :cascade do |t|
