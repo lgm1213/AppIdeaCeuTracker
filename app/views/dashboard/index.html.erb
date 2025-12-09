@@ -3,7 +3,6 @@
     
     <!-- Sidebar / Profile Summary -->
     <div class="col-lg-3 mb-4">
-      <!-- REMOVED 'h-100' so the card doesn't stretch to match the right column -->
       <div class="card shadow-sm text-center">
         <div class="card-body d-flex flex-column align-items-center justify-content-center">
           <div class="d-inline-flex align-items-center justify-content-center bg-light text-primary rounded-circle mb-3" style="width: 80px; height: 80px; font-size: 2rem; font-weight: bold;">
@@ -24,8 +23,19 @@
           </p>
           
           <div class="d-grid gap-2 w-100">
-            <%= link_to "Edit Profile", edit_profile_path, class: "btn btn-outline-primary" %>
-            <%= button_to "Log Out", logout_path, method: :delete, class: "btn btn-outline-danger w-100" %>
+            <%= link_to "Edit Profile", 
+                        edit_profile_path, 
+                        class: "btn btn-outline-primary" %>
+            
+            <!-- NEW: Search Link in Sidebar -->
+            <%= link_to "Find CEUs", 
+                        events_path, 
+                        class: "btn btn-outline-secondary" %>
+
+            <%= button_to "Log Out", 
+                          logout_path, 
+                          method: :delete, 
+                          class: "btn btn-outline-danger w-100" %>
           </div>
         </div>
       </div>
@@ -69,7 +79,9 @@
       <div class="card shadow-sm mb-5">
         <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
           <h5 class="mb-0">Licenses</h5>
-          <%= link_to "+ Add License", new_professional_license_path, class: "btn btn-sm btn-primary rounded-pill px-3" %>
+          <%= link_to "+ Add License", 
+                      new_professional_license_path, 
+                      class: "btn btn-sm btn-primary rounded-pill px-3" %>
         </div>
         <div class="card-body p-0">
           <% if @licenses.any? %>
@@ -96,8 +108,14 @@
                       </td>
                       <td class="text-end pe-4">
                         <div class="d-flex justify-content-end gap-1">
-                          <%= link_to "Edit", edit_professional_license_path(license), class: "btn btn-sm btn-outline-secondary" %>
-                          <%= button_to "Remove", professional_license_path(license), method: :delete, class: "btn btn-sm btn-outline-danger", data: { turbo_confirm: "Are you sure?" } %>
+                          <%= link_to "Edit", 
+                                      edit_professional_license_path(license), 
+                                      class: "btn btn-sm btn-outline-secondary" %>
+                          <%= button_to "Remove", 
+                                        professional_license_path(license), 
+                                        method: :delete, 
+                                        class: "btn btn-sm btn-outline-danger", 
+                                        data: { turbo_confirm: "Are you sure?" } %>
                         </div>
                       </td>
                     </tr>
@@ -114,7 +132,7 @@
       </div>
 
       <!-- CEU History Section -->
-      <div class="card shadow-sm">
+      <div class="card shadow-sm mb-5">
         <div class="card-header bg-white py-3 d-flex flex-wrap justify-content-between align-items-center gap-2">
           <h5 class="mb-0">CEU History</h5>
           
@@ -138,7 +156,9 @@
               </ul>
             </div>
 
-            <%= link_to "+ Log Class", new_ceu_path, class: "btn btn-sm btn-success rounded-pill px-3" %>
+            <%= link_to "+ Log Class", 
+                        new_ceu_path, 
+                        class: "btn btn-sm btn-success rounded-pill px-3" %>
           </div>
         </div>
         <div class="card-body p-0">
@@ -162,15 +182,24 @@
                       <td><%= ceu.duration %></td>
                       <td>
                         <% if ceu.certificate.attached? %>
-                          <%= link_to "View PDF", rails_blob_path(ceu.certificate, disposition: "preview"), target: "_blank", class: "btn btn-sm btn-link text-decoration-none p-0" %>
+                          <%= link_to "View PDF", 
+                                      rails_blob_path(ceu.certificate, disposition: "preview"), 
+                                      target: "_blank", 
+                                      class: "btn btn-sm btn-link text-decoration-none p-0" %>
                         <% else %>
                           <span class="text-muted small">-</span>
                         <% end %>
                       </td>
                       <td class="text-end pe-4">
                         <div class="d-flex justify-content-end gap-1">
-                          <%= link_to "Edit", edit_ceu_path(ceu), class: "btn btn-sm btn-outline-secondary" %>
-                          <%= button_to "Remove", ceu_path(ceu), method: :delete, class: "btn btn-sm btn-outline-danger", data: { turbo_confirm: "Are you sure?" } %>
+                          <%= link_to "Edit", 
+                                      edit_ceu_path(ceu), 
+                                      class: "btn btn-sm btn-outline-secondary" %>
+                          <%= button_to "Remove", 
+                                        ceu_path(ceu), 
+                                        method: :delete, 
+                                        class: "btn btn-sm btn-outline-danger", 
+                                        data: { turbo_confirm: "Are you sure?" } %>
                         </div>
                       </td>
                     </tr>
@@ -183,6 +212,17 @@
               <p class="mb-0">No CEUs logged yet.</p>
             </div>
           <% end %>
+        </div>
+      </div>
+
+      <!-- NEW SECTION: Find CEU Opportunities -->
+      <div class="card bg-light border-0 shadow-sm">
+        <div class="card-body p-4 d-flex align-items-center justify-content-between">
+          <div>
+            <h5 class="fw-bold text-primary mb-1">Need more credits?</h5>
+            <p class="mb-0 text-muted">Browse our database of upcoming classes, webinars, and conferences.</p>
+          </div>
+          <%= link_to "Find Opportunities", events_path, class: "btn btn-primary" %>
         </div>
       </div>
 

@@ -1,0 +1,111 @@
+<div class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h2 class="fw-bold mb-0">Find CEU Opportunities</h2>
+      <p class="text-muted">Search for classes, conferences, and webinars.</p>
+    </div>
+    <!-- Back to Dashboard Link -->
+    <%= link_to "Back to Dashboard", dashboard_path, class: "btn btn-outline-secondary btn-sm" %>
+  </div>
+
+  <!-- Search & Filter Form -->
+  <div class="card shadow-sm mb-5 border-0 bg-white">
+    <div class="card-body p-4">
+      <%= form_with url: events_path, method: :get, local: true, class: "row g-3" do |f| %>
+        
+        <!-- Text Search -->
+        <div class="col-md-4">
+          <%= f.label :query, "Keywords", class: "form-label small text-muted fw-bold" %>
+          <div class="input-group">
+            <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+            <%= f.text_field :query, value: params[:query], class: "form-control", placeholder: "e.g. Ethics, Pediatrics..." %>
+          </div>
+        </div>
+
+        <!-- Location -->
+        <div class="col-md-3">
+          <%= f.label :location, "Location", class: "form-label small text-muted fw-bold" %>
+          <div class="input-group">
+            <span class="input-group-text bg-white"><i class="bi bi-geo-alt"></i></span>
+            <%= f.text_field :location, value: params[:location], class: "form-control", placeholder: "City or State" %>
+          </div>
+        </div>
+
+        <!-- Event Type Dropdown -->
+        <div class="col-md-2">
+          <%= f.label :event_type, "Type", class: "form-label small text-muted fw-bold" %>
+          <%= f.select :event_type, options_for_select(@types, params[:event_type]), { include_blank: "All Types" }, { class: "form-select" } %>
+        </div>
+
+        <!-- Category Dropdown -->
+        <div class="col-md-2">
+          <%= f.label :category, "Category", class: "form-label small text-muted fw-bold" %>
+          <%= f.select :category, options_for_select(@categories, params[:category]), { include_blank: "All Categories" }, { class: "form-select" } %>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="col-md-1 d-flex align-items-end">
+          <%= f.submit "Filter", class: "btn btn-primary w-100" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Results Logic -->
+  <% if @events.any? %>
+    <!-- STATE 1: Results Found -->
+    <div class="row g-4">
+      <% @events.each do |event| %>
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 shadow-sm border-0 hover-shadow transition">
+            <div class="card-body d-flex flex-column">
+              <div class="d-flex justify-content-between mb-2">
+                <span class="badge bg-light text-primary border"><%= event.event_type %></span>
+                <span class="badge bg-light text-secondary border"><%= event.category %></span>
+              </div>
+              
+              <h5 class="card-title fw-bold mt-2"><%= event.title %></h5>
+              <h6 class="card-subtitle mb-3 text-muted"><%= event.provider %></h6>
+              
+              <div class="mb-3 small">
+                <div class="d-flex align-items-center mb-1 text-secondary">
+                  <i class="bi bi-calendar-event me-2"></i> 
+                  <%= event.date.strftime("%B %d, %Y @ %l:%M %p") %>
+                </div>
+                <div class="d-flex align-items-center mb-1 text-secondary">
+                  <i class="bi bi-geo-alt me-2"></i> 
+                  <%= event.location %>
+                </div>
+                <div class="d-flex align-items-center text-secondary">
+                  <i class="bi bi-patch-check me-2"></i> 
+                  <%= event.credits %> Credits
+                </div>
+              </div>
+              
+              <div class="mt-auto d-grid">
+                <%= link_to "View Details", event.url.present? ? event.url : "#", target: "_blank", class: "btn btn-outline-primary btn-sm" %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+  <% elsif params[:query].present? || params[:event_type].present? || params[:category].present? || params[:location].present? %>
+    <!-- STATE 2: Search performed, but nothing found -->
+    <div class="text-center py-5">
+      <i class="bi bi-search display-1 text-muted opacity-25"></i>
+      <h3 class="mt-3 text-muted">No events found</h3>
+      <p>We couldn't find any matches. Try adjusting your filters.</p>
+      <%= link_to "Clear Filters", events_path, class: "btn btn-link" %>
+    </div>
+
+  <% else %>
+    <!-- STATE 3: Blank Slate (Initial Load) -->
+    <div class="text-center py-5">
+      <i class="bi bi-mortarboard display-1 text-muted opacity-25"></i>
+      <h4 class="mt-3 text-muted">Ready to learn?</h4>
+      <p class="text-muted">Use the filters above to find CEU opportunities near you.</p>
+    </div>
+  <% end %>
+</div>
