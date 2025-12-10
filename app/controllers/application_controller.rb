@@ -31,7 +31,7 @@ class ApplicationController < ActionController::Base
     session[:user_id] = user.id
   end
 
-  #logs out the user
+  # logs out the user
   def logout
     reset_session
     @current_user = nil

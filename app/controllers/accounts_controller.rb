@@ -11,7 +11,7 @@ class AccountsController < ApplicationController
 
   def update
     @user = current_user
-    
+
     # Separate logic: Password change vs General update (email)
     if account_params[:password].present?
       update_password
