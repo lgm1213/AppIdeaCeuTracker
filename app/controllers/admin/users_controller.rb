@@ -82,11 +82,11 @@ module Admin
 
         is_admin = if current_user.respond_to?(:admin?)
                      current_user.admin?
-                   elsif current_user.respond_to?(:role)
-                     current_user.role == 'admin'
-                   else
+        elsif current_user.respond_to?(:role)
+                     current_user.role == "admin"
+        else
                      false
-                   end
+        end
 
         unless is_admin
           respond_to do |format|
@@ -104,7 +104,7 @@ module Admin
       end
 
       def current_user
-        super rescue nil 
+        super rescue nil
       end
   end
 end
