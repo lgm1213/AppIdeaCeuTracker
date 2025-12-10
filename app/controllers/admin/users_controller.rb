@@ -75,13 +75,18 @@ module Admin
       # Strong parameters for Admin (Dynamic/Conditional)
       def admin_user_params
         permitted = [ :email_address, :password, :password_confirmation, :name ]
-        # Add sensitive attributes ONLY if the user is an admin
         if current_user&.respond_to?(:admin?) && current_user.admin?
-          permitted << :role
-          permitted << :admin
+          permitted += [ :role, :admin ]
         end
-        # Permits the dynamically built list Using fetch(:user, {}) allows the method to work even if params[:user] is missing (e.g. API checks)
-        params.fetch(:user, {}).permit(*permitted)
+
+        # If params[:user] exists, permit from that nested params object.
+        # If not, fall back to permitting the top-level params (common with non-API forms).
+        if params.key?(:user)
+          params.require(:user).permit(*permitted)
+        else
+          # Ensure permit is called on an ActionController::Parameters instance, not a plain Hash
+          params.permit(*permitted)
+        end
       end
 
       # Security check
