@@ -98,8 +98,11 @@ module Admin
 
       # Strong parameters for Admin
       def admin_user_params
-        params.fetch(:user, {}).permit(:email_address, :password, :password_confirmation, :name, :role)
+        permitted = [:email_address, :password, :password_confirmation, :name]
+        permitted << :role if current_user&.admin?
+        params.fetch(:user, {}).permit(*permitted)
       end
+
 
       # Security check
       def ensure_admin!
