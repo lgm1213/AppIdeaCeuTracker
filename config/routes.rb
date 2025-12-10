@@ -39,7 +39,7 @@ Rails.application.routes.draw do
   namespace :admin do
     # manage CEU Events and Users
     resources :ceu_events, except: [ :show ]
-    resources :users, except: [ :show, :new, :create ]
+    resources :users, except: [ :show ]
   end
 
 

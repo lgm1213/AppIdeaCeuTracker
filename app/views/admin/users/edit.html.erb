@@ -1,0 +1,51 @@
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-6">
+      <div class="card shadow-sm">
+        <div class="card-header bg-white py-3">
+          <h4 class="mb-0">Edit User</h4>
+        </div>
+        <div class="card-body">
+          <%= form_with model: [:admin, @user], local: true do |f| %>
+            
+            <% if @user.errors.any? %>
+              <div class="alert alert-danger">
+                <ul class="mb-0">
+                  <% @user.errors.full_messages.each do |msg| %>
+                    <li><%= msg %></li>
+                  <% end %>
+                </ul>
+              </div>
+            <% end %>
+
+            <div class="mb-3">
+              <label class="form-label fw-bold">Name (Profile)</label>
+              <!-- Read-only field just for context. We use safe navigation '&.' -->
+              <input type="text" class="form-control" value="<%= @user.profile&.full_name || 'No Profile Created' %>" disabled readonly>
+              <div class="form-text">Profile details (Name, Bio) must be edited by the user themselves.</div>
+            </div>
+
+            <div class="mb-3">
+              <%= f.label :email_address, class: "form-label fw-bold" %>
+              <%= f.email_field :email_address, class: "form-control" %>
+            </div>
+
+            <div class="mb-4 form-check bg-light p-3 rounded border">
+              <%= f.check_box :admin, class: "form-check-input" %>
+              <%= f.label :admin, "Administrator Privileges", class: "form-check-label fw-bold" %>
+              <div class="form-text text-danger mt-1">
+                <i class="bi bi-exclamation-triangle-fill me-1"></i>
+                Admins can access this portal, manage all events, and delete other users.
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-end gap-2 border-top pt-3">
+              <%= link_to "Cancel", admin_users_path, class: "btn btn-outline-secondary" %>
+              <%= f.submit "Save Changes", class: "btn btn-primary" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

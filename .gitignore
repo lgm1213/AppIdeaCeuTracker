@@ -38,3 +38,6 @@
 !/app/assets/builds/.keep
 
 /node_modules
+
+#ignore git commit fix 
+fix_email_history.sh

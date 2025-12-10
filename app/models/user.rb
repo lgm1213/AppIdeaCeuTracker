@@ -8,6 +8,7 @@ class User < ApplicationRecord
 
   # A user has one bio profile
   has_one :user_profile, dependent: :destroy
+  has_one :profile, class_name: "UserProfile", dependent: :destroy
 
   # Allows the User form to accept fields for the UserProfile
   accepts_nested_attributes_for :user_profile

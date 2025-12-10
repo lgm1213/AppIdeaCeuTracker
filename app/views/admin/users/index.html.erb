@@ -1,0 +1,54 @@
+<div class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Manage Users</h2>
+    <div>
+      <%= link_to "Back to Dashboard", dashboard_path, class: "btn btn-outline-secondary btn-sm me-2" %>
+      <!-- Create User Button for Admin Onboarding -->
+      <%= link_to "+ Create User", new_admin_user_path, class: "btn btn-primary btn-sm" %>
+    </div>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="table-responsive">
+      <table class="table table-hover mb-0 align-middle">
+        <thead class="table-light">
+          <tr>
+            <th class="ps-4">Joined</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th class="text-end pe-4">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @users.each do |user| %>
+            <tr class="<%= 'table-warning' if user.admin? %>">
+              <td class="ps-4 text-muted small"><%= user.created_at.strftime("%b %d, %Y") %></td>
+              <td class="fw-bold">
+                <!-- Safe navigation in case profile hasn't been created yet -->
+                <%= user.profile&.full_name || "No Profile" %>
+              </td>
+              <td><%= user.email_address %></td>
+              <td>
+                <% if user.admin? %>
+                  <span class="badge bg-warning text-dark border border-warning">Admin</span>
+                <% else %>
+                  <span class="badge bg-light text-secondary border">User</span>
+                <% end %>
+              </td>
+              <td class="text-end pe-4">
+                <div class="d-flex justify-content-end gap-1">
+                  <%= link_to "Edit", edit_admin_user_path(user), class: "btn btn-sm btn-outline-secondary" %>
+                  
+                  <% unless user == current_user %>
+                    <%= button_to "Delete", admin_user_path(user), method: :delete, class: "btn btn-sm btn-outline-danger", data: { turbo_confirm: "Are you sure? This will delete the user and ALL their data." } %>
+                  <% end %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
