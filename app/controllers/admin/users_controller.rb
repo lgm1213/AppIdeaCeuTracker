@@ -79,13 +79,16 @@ module Admin
           permitted += [ :role, :admin ]
         end
 
-        # If params[:user] exists, permit from that nested params object.
-        # If not, fall back to permitting the top-level params (common with non-API forms).
         if params.key?(:user)
           params.require(:user).permit(*permitted)
         else
-          # Ensure permit is called on an ActionController::Parameters instance, not a plain Hash
-          params.permit(*permitted)
+          # If params is already an ActionController::Parameters, permit directly.
+          # Otherwise wrap the plain Hash in ActionController::Parameters so permit is available.
+          if params.respond_to?(:permit)
+            params.permit(*permitted)
+          else
+            ActionController::Parameters.new(params).permit(*permitted)
+          end
         end
       end
 
