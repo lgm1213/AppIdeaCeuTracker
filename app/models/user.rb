@@ -38,4 +38,21 @@ class User < ApplicationRecord
   def clear_password_reset_token!
     update(reset_token: nil, reset_sent_at: nil)
   end
+
+  def update_with_password(params)
+    current_password = params.delete(:current_password)
+
+    if current_password.blank?
+      errors.add(:current_password, "must be provided to make changes")
+      return false
+    end
+
+    if authenticate(current_password)
+      update(params)
+    else
+      errors.add(:current_password, "is incorrect")
+      false
+    end
+  end
+  
 end

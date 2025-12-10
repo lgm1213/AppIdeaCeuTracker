@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   root "home#index"
 
-  # Authentication & Registration Routes
+  # Authentication & Session Routes
   get "/login", to: "sessions#new"
   post "/login", to: "sessions#create"
   delete "/logout", to: "sessions#destroy"
@@ -11,6 +11,9 @@ Rails.application.routes.draw do
   # Registration Routes
   get "/signup", to: "registrations#new", as: "signup"
   post "/signup", to: "registrations#create"
+
+  # User Account Management Routes
+  resource :account, only: [:show, :edit, :update, :destroy]
 
   # Dashboard(Protected Area) Routes
   get "dashboard/index", to: "dashboard#index", as: "dashboard"
@@ -34,7 +37,9 @@ Rails.application.routes.draw do
   # Admin Namespace Routes
   # Only accessible by admin users
   namespace :admin do
+    #manage CEU Events and Users
     resources :ceu_events, except: [ :show ]
+    resources :users, except: [ :show, :new, :create ]
   end
 
 
