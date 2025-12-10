@@ -26,27 +26,52 @@ module Admin
     def create
       @user = User.new(admin_user_params)
 
+      # Allow setting admin/role only when the current_user is an admin
+      if current_user&.respond_to?(:admin?) && current_user.admin?
+        if params[:user].key?(:admin)
+          @user.admin = ActiveModel::Type::Boolean.new.cast(params[:user][:admin])
+        end
+        @user.role = params[:user][:role] if params[:user].key?(:role)
+      end
+
       respond_to do |format|
         if @user.save
           format.html { redirect_to admin_user_path(@user), notice: "User was successfully created." }
           format.json { render :show, status: :created, location: @user }
         else
-          # IMPORTANT: We render :new with status :unprocessable_entity so errors show up
           format.html { render :new, status: :unprocessable_entity }
           format.json { render json: @user.errors, status: :unprocessable_entity }
         end
       end
     end
 
-    # PATCH/PUT /admin/users/1
     def update
-      respond_to do |format|
-        if @user.update(admin_user_params)
-          format.html { redirect_to admin_user_path(@user), notice: "User was successfully updated." }
-          format.json { render :show, status: :ok, location: @user }
-        else
-          format.html { render :edit, status: :unprocessable_entity }
-          format.json { render json: @user.errors, status: :unprocessable_entity }
+      # Only allow admin/role changes from an admin
+      if current_user&.respond_to?(:admin?) && current_user.admin?
+        # copy permitted params and then set admin/role from raw params
+        permitted = admin_user_params.to_h
+        permitted["admin"] = ActiveModel::Type::Boolean.new.cast(params[:user][:admin]) if params[:user].key?(:admin)
+        permitted["role"]  = params[:user][:role] if params[:user].key?(:role)
+
+        respond_to do |format|
+          if @user.update(permitted)
+            format.html { redirect_to admin_user_path(@user), notice: "User was successfully updated." }
+            format.json { render :show, status: :ok, location: @user }
+          else
+            format.html { render :edit, status: :unprocessable_entity }
+            format.json { render json: @user.errors, status: :unprocessable_entity }
+          end
+        end
+      else
+        # Non-admins can only update permitted safe attributes
+        respond_to do |format|
+          if @user.update(admin_user_params)
+            format.html { redirect_to admin_user_path(@user), notice: "User was successfully updated." }
+            format.json { render :show, status: :ok, location: @user }
+          else
+            format.html { render :edit, status: :unprocessable_entity }
+            format.json { render json: @user.errors, status: :unprocessable_entity }
+          end
         end
       end
     end
@@ -73,7 +98,7 @@ module Admin
 
       # Strong parameters for Admin
       def admin_user_params
-        params.require(:user).permit(:email_address, :password, :password_confirmation, :admin, :name, :role)
+        params.require(:user).permit(:email_address, :password, :password_confirmation, :name, :role)
       end
 
       # Security check
