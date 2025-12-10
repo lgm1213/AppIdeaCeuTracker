@@ -98,7 +98,7 @@ module Admin
 
       # Strong parameters for Admin
       def admin_user_params
-        params.require(:user).permit(:email_address, :password, :password_confirmation, :name, :role)
+        params.fetch(:user, {}).permit(:email_address, :password, :password_confirmation, :name, :role)
       end
 
       # Security check
