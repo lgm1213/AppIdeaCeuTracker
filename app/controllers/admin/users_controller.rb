@@ -24,15 +24,8 @@ module Admin
 
     # POST /admin/users
     def create
+      # The admin_user_params method now handles the conditional logic for role/admin
       @user = User.new(admin_user_params)
-
-      # Allow setting admin/role only when the current_user is an admin
-      if current_user&.respond_to?(:admin?) && current_user.admin?
-        if params[:user].key?(:admin)
-          @user.admin = ActiveModel::Type::Boolean.new.cast(params[:user][:admin])
-        end
-        @user.role = params[:user][:role] if params[:user].key?(:role)
-      end
 
       respond_to do |format|
         if @user.save
@@ -45,33 +38,16 @@ module Admin
       end
     end
 
+    # PATCH/PUT /admin/users/1
     def update
-      # Only allow admin/role changes from an admin
-      if current_user&.respond_to?(:admin?) && current_user.admin?
-        # copy permitted params and then set admin/role from raw params
-        permitted = admin_user_params.to_h
-        permitted["admin"] = ActiveModel::Type::Boolean.new.cast(params[:user][:admin]) if params[:user].key?(:admin)
-        permitted["role"]  = params[:user][:role] if params[:user].key?(:role)
-
-        respond_to do |format|
-          if @user.update(permitted)
-            format.html { redirect_to admin_user_path(@user), notice: "User was successfully updated." }
-            format.json { render :show, status: :ok, location: @user }
-          else
-            format.html { render :edit, status: :unprocessable_entity }
-            format.json { render json: @user.errors, status: :unprocessable_entity }
-          end
-        end
-      else
-        # Non-admins can only update permitted safe attributes
-        respond_to do |format|
-          if @user.update(admin_user_params)
-            format.html { redirect_to admin_user_path(@user), notice: "User was successfully updated." }
-            format.json { render :show, status: :ok, location: @user }
-          else
-            format.html { render :edit, status: :unprocessable_entity }
-            format.json { render json: @user.errors, status: :unprocessable_entity }
-          end
+      respond_to do |format|
+        # We use admin_user_params here as well to ensure security rules apply to updates
+        if @user.update(admin_user_params)
+          format.html { redirect_to admin_user_path(@user), notice: "User was successfully updated." }
+          format.json { render :show, status: :ok, location: @user }
+        else
+          format.html { render :edit, status: :unprocessable_entity }
+          format.json { render json: @user.errors, status: :unprocessable_entity }
         end
       end
     end
@@ -96,13 +72,17 @@ module Admin
         end
       end
 
-      # Strong parameters for Admin
+      # Strong parameters for Admin (Dynamic/Conditional)
       def admin_user_params
         permitted = [ :email_address, :password, :password_confirmation, :name ]
-        permitted << :role if current_user&.admin?
+        # Add sensitive attributes ONLY if the user is an admin
+        if current_user&.respond_to?(:admin?) && current_user.admin?
+          permitted << :role
+          permitted << :admin
+        end
+        # Permits the dynamically built list Using fetch(:user, {}) allows the method to work even if params[:user] is missing (e.g. API checks)
         params.fetch(:user, {}).permit(*permitted)
       end
-
 
       # Security check
       def ensure_admin!
@@ -110,11 +90,11 @@ module Admin
 
         is_admin = if current_user.respond_to?(:admin?)
                      current_user.admin?
-        elsif current_user.respond_to?(:role)
-                     current_user.role == "admin"
-        else
+                   elsif current_user.respond_to?(:role)
+                     current_user.role == 'admin'
+                   else
                      false
-        end
+                   end
 
         unless is_admin
           respond_to do |format|
@@ -132,7 +112,7 @@ module Admin
       end
 
       def current_user
-        super rescue nil
+        super rescue nil 
       end
   end
 end
